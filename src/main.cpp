@@ -5,7 +5,7 @@
 #include <Wire.h>
 #include <MQTT.h>
 #include <WiFi.h>
-#include "Adafruit_HTU21DF.h"
+#include <Adafruit_HTU21DF.h>
 
 #include "Communicator.hpp"
 #include "Measurement.hpp"
@@ -24,10 +24,10 @@ void setup()
   Serial.begin(SERIAL_SPEED);
 #endif
 
-  if(!htu.begin())
-    {
-      DBG_PRINTLN(F("Unable to init HTU sensor"));
-    }
+  if (!htu.begin())
+  {
+    DBG_PRINTLN(F("Unable to init HTU sensor"));
+  }
   setupNetwok();
 }
 
@@ -70,7 +70,7 @@ void setupNetwok()
 
       mqttClient.begin(MQTT_SERVER, MQTT_PORT, wifiClient);
       mqttClient.setTimeout(MQTT_TIMEOUT);
-      //mqttClient.onMessage(callback);
+      // mqttClient.onMessage(callback);
       mqttClient.connect(MQTT_ID);
     }
   }

@@ -1,11 +1,13 @@
 #ifndef MEASUREMENT_HPP
 #define MEASUREMENT_HPP
 
+/** @cond */
 #include <string>
 #include <sps30.h>
 #include <ArduinoJson.h>
+/** @endcond */
 
-/** \file datastruct.hpp
+/** \file Measurement.hpp
  * Holds structure for measurement data
  */
 

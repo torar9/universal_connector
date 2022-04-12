@@ -80,7 +80,7 @@
 /** @endcond */
 
 /**< Baud rate for serial communication. */
-#define SERIAL_SPEED 115200 
+#define SERIAL_SPEED 115200
 
 /**< JSON document buffer size in bytes for measured data. */
 #define JSON_DOC_SIZE_MEASUREMENTS 512

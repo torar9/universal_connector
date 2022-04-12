@@ -1,8 +1,10 @@
 #ifndef COMMUNICATOR_HPP
 #define COMMUNICATOR_HPP
 
+/** @cond */
 #include <MQTTClient.h>
 #include <ArduinoJson.h>
+/** @endcond */
 
 #include "config.hpp"
 
