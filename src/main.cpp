@@ -1,4 +1,3 @@
-
 #include <ArduinoJson.h>
 #include <WiFiClient.h>
 #include <Arduino.h>
@@ -10,13 +9,14 @@
 #include <Adafruit_Sensor.h>
 
 #include "Communicator.hpp"
-#include "Measurement.hpp"
+#include "mySensors/HTU21DSensor.hpp"
 #include "config.hpp"
 
 MQTTClient mqttClient(MQTT_PACKET_SIZE);
 Communicator comm(mqttClient);
 WiFiClient wifiClient;
 Adafruit_HTU21DF htu = Adafruit_HTU21DF();
+HTU21DSensor htu21d;
 
 void setupNetwok();
 
@@ -32,22 +32,22 @@ void setup()
   {
     DBG_PRINTLN(F("Unable to init HTU sensor"));
   }
+  
   setupNetwok();
 }
 
 void loop()
 {
   DynamicJsonDocument eventDoc(JSON_DOC_SIZE_MEASUREMENTS);
-  measurement_t data;
 
-  float temp = htu.readTemperature();
-  float hum = htu.readHumidity();
+  htu21d.measure();
 
   DBG_PRINT("Temperature: ");
-  DBG_PRINTLN(temp);
+  DBG_PRINTLN(htu21d.getTemperature());
 
   DBG_PRINT("Humidity: ");
-  DBG_PRINTLN(hum);
+  DBG_PRINTLN(htu21d.getHumidity());
+  
   delay(2000);
 }
 

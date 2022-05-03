@@ -30,6 +30,13 @@ typedef struct
   sps30_measurement spsData;
 } measurement_t;
 
+typedef enum
+{
+    PRESSURE = (1),
+    TEMPERATURE = (2),
+    VOLTAGE = (3)
+} sensor_type_t;
+
 class Measurement
 {
 private:
