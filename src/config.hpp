@@ -17,6 +17,8 @@
 /**< Wi-Fi SSID. */
 #define SSID "Damian"
 
+#define DEVICE_ID = "0123";
+
 /**< Wi-Fi password. */
 #define WIFI_PASSWD "Ahoj123123"
 

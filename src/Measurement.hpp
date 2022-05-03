@@ -5,6 +5,8 @@
 #include <string>
 #include <sps30.h>
 #include <ArduinoJson.h>
+
+#include "config.hpp"
 /** @endcond */
 
 /** \file Measurement.hpp
@@ -16,6 +18,7 @@
  */
 typedef struct
 {
+  char* device_id;
   float humidity = NAN;       /**< Humidity level in % */
   char *time;                 /**< Time in "yyyy-MM-dd HH:mm:ss" format*/
   float batteryLevel = NAN;   /**< Battery level in % */

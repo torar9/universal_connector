@@ -2,6 +2,7 @@
 
 void Measurement::addDataToDocument(DynamicJsonDocument &doc, measurement_t &data)
 {
+    doc[F("device_id")] = data.device_id;
     doc[F("altitude")] = data.altitude;
     doc[F("humidity")] = data.humidity;
     doc[F("pressure")] = data.pressure;

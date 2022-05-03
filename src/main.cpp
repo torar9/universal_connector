@@ -6,6 +6,8 @@
 #include <MQTT.h>
 #include <WiFi.h>
 #include <Adafruit_HTU21DF.h>
+#include <Adafruit_MAX31865.h>
+#include <Adafruit_Sensor.h>
 
 #include "Communicator.hpp"
 #include "Measurement.hpp"
@@ -17,6 +19,8 @@ WiFiClient wifiClient;
 Adafruit_HTU21DF htu = Adafruit_HTU21DF();
 
 void setupNetwok();
+
+void messageReceived(String &topic, String &payload);
 
 void setup()
 {
@@ -70,8 +74,13 @@ void setupNetwok()
 
       mqttClient.begin(MQTT_SERVER, MQTT_PORT, wifiClient);
       mqttClient.setTimeout(MQTT_TIMEOUT);
-      // mqttClient.onMessage(callback);
+      mqttClient.onMessage(messageReceived);
       mqttClient.connect(MQTT_ID);
     }
   }
+}
+
+void messageReceived(String &topic, String &payload)
+{
+  Serial.println("incoming: " + topic + " - " + payload);
 }
