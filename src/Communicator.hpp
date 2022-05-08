@@ -2,7 +2,7 @@
 #define COMMUNICATOR_HPP
 
 /** @cond */
-#include <MQTTClient.h>
+#include <PubSubClient.h>
 #include <ArduinoJson.h>
 /** @endcond */
 
@@ -11,32 +11,23 @@
 class Communicator
 {
 private:
-    MQTTClient &client;
+    PubSubClient &client;
 
 public:
-    Communicator(MQTTClient &client);
+    Communicator(PubSubClient &client);
     /**
      * Callback function for MQTT client
      * @param toopic MQTT topic name
      * @param payload content
      */
-    void callback(String &topic, String &payload);
+    void callback(char* topic, byte* message, unsigned int length);
 
     /**
      * Function for uploading measurment data to MQTT topic on server.
-     * @param doc JSON document with data.
+     * @param doc Address of JSON document with data.
      * @param topic MQTT topic name.
      * @return Wherever or not upload was successful.
      */
-    bool uploadData(DynamicJsonDocument &doc, char *topic);
-
-    /**
-     * Is used to print log output to serial communication.
-     * If connection to server is available log is also sent to MQTT topic.
-     * @param message Content of log
-     * @param newLine Whetever or not print log to new line in serial communication DEFAULT VALUE = true.
-     * @param topic MQTT topic name DEFAULT VALUE = LOG_TOPIC.
-     */
-    void log(const char *message, bool newLine = true, const char *topic = LOG_TOPIC);
+    bool uploadData(DynamicJsonDocument &doc, const char *topic);
 };
 #endif

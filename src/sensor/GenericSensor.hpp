@@ -6,9 +6,9 @@
 
 class GenericSensor {
     public:
-    const char* SENSOR_NAME;
-    virtual const DynamicJsonDocument* getDocument() = 0;
-    virtual void measure() = 0;
+    virtual void measureAndStore() = 0;
+    virtual void storeInto(DynamicJsonDocument& document) = 0;
+    virtual void storeInto(JsonArray& arr) = 0;
 };
 
 #endif

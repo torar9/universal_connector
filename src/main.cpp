@@ -1,54 +1,113 @@
-#include <ArduinoJson.h>
-#include <WiFiClient.h>
 #include <Arduino.h>
-#include <Wire.h>
-#include <MQTT.h>
+#include <ArduinoJson.h>
 #include <WiFi.h>
-#include <Adafruit_HTU21DF.h>
+#include <esp_wifi.h>
+#include <WiFiClient.h>
+#include <PubSubClient.h>
 #include <Adafruit_MAX31865.h>
-#include <Adafruit_Sensor.h>
+#include <WebServer.h>
 
 #include "Communicator.hpp"
 #include "mySensors/HTU21DSensor.hpp"
+#include "mySensors/PT1000Sensor.hpp"
 #include "config.hpp"
 
-MQTTClient mqttClient(MQTT_PACKET_SIZE);
-Communicator comm(mqttClient);
+const char HTML[] = "<!DOCTYPE html>\
+<html>\
+<body>\
+<h1>ESP32 config page - Access Point x</h1>\
+<form method=\"get\">\
+<label>Json config</label>\
+<hr>\
+<textarea rows=\"10\" cols=\"50\" name=\"config\" form=\"configForm\">{&#10;\
+\"ssid\": \"\",&#10;\
+\"passwd\": \"\",&#10;\
+\"mqtt_server\": \"\",&#10;\
+\"mqtt_id\": \"\",&#10;\
+\"mqtt_topic\": \"\"&#10;\
+}</textarea>\
+<hr>\
+<input type=\"submit\">\
+</form>\
+</body>\
+</html>";
+
 WiFiClient wifiClient;
-Adafruit_HTU21DF htu = Adafruit_HTU21DF();
+PubSubClient mqttClient(wifiClient);
+Communicator comm(mqttClient);
+WebServer server(80);
+
+// My sensors
 HTU21DSensor htu21d;
+PT1000Sensor pt1000(1000.0, 4015, 15);
+
+TaskHandle_t loopTask;
+
+bool setUp = false;
 
 void setupNetwok();
+void setupAP();
 
-void messageReceived(String &topic, String &payload);
+void callback(char *topic, byte *message, unsigned int length);
+
+void handle_root();
+
+void loopHandler(void *parameter);
 
 void setup()
 {
 #if DEBUG == 1
   Serial.begin(SERIAL_SPEED);
+  delay(2000);
 #endif
 
-  if (!htu.begin())
+  if (!htu21d.begin())
   {
     DBG_PRINTLN(F("Unable to init HTU sensor"));
   }
+
+  if (!pt1000.begin(MAX31865_3WIRE))
+  {
+    DBG_PRINTLN("Unable to init MAX31865.");
+  }
+  server.on("/", handle_root);
+
+  setupAP();
+  server.begin();
+
+  DBG_PRINTLN("HTTP server started");
   
+  xTaskCreatePinnedToCore(
+      loopHandler, /* Function to implement the task */
+      "web_task",  /* Name of the task */
+      10000,       /* Stack size in words */
+      NULL,        /* Task input parameter */
+      0,           /* Priority of the task */
+      &loopTask,   /* Task handle. */
+      0);          /* Core where the task should run */
+
+  while (!setUp)
+  {
+    delay(1);
+  }
+
   setupNetwok();
 }
 
 void loop()
 {
   DynamicJsonDocument eventDoc(JSON_DOC_SIZE_MEASUREMENTS);
+  JsonArray measurements = eventDoc.createNestedArray(F("measurements"));
 
-  htu21d.measure();
+  htu21d.measureAndStore();
+  pt1000.measureAndStore();
 
-  DBG_PRINT("Temperature: ");
-  DBG_PRINTLN(htu21d.getTemperature());
+  htu21d.storeInto(measurements);
+  pt1000.storeInto(measurements);
 
-  DBG_PRINT("Humidity: ");
-  DBG_PRINTLN(htu21d.getHumidity());
-  
-  delay(2000);
+  comm.uploadData(eventDoc, MQTT_DATA_TOPIC.c_str());
+
+  delay(10000);
 }
 
 void setupNetwok()
@@ -56,10 +115,10 @@ void setupNetwok()
   if (WiFi.status() != WL_CONNECTED)
   {
     DBG_PRINTLN(F("Connecting to WiFi..."));
-    WiFi.mode(WIFI_MODE_STA);
-    WiFi.setHostname(HOSTNAME);
+    WiFi.mode(WIFI_MODE_APSTA);
+    WiFi.setHostname(HOSTNAME.c_str());
     WiFi.setAutoReconnect(true);
-    WiFi.begin(SSID, WIFI_PASSWD);
+    WiFi.begin(SSID.c_str(), WIFI_PASSWD.c_str());
     WiFi.waitForConnectResult();
 
     if (WiFi.status() != WL_CONNECTED)
@@ -70,17 +129,62 @@ void setupNetwok()
     {
       DBG_PRINTLN(F("Connected to WiFi."));
       DBG_PRINT(F("IPv4 address: "));
-      DBG_PRINTLN(wifiClient.localIP());
+      DBG_PRINTLN(WiFi.localIP());
 
-      mqttClient.begin(MQTT_SERVER, MQTT_PORT, wifiClient);
-      mqttClient.setTimeout(MQTT_TIMEOUT);
-      mqttClient.onMessage(messageReceived);
-      mqttClient.connect(MQTT_ID);
+      if (WiFi.status() == WL_CONNECTED)
+      {
+        struct tm timeStr;
+
+        configTime(GMT_OFFSET_SEC, DAYLIGHT_OFFSET_SEC, NTP_SERVER.c_str());
+        getLocalTime(&timeStr);
+      }
+
+      mqttClient.setServer(MQTT_SERVER.c_str(), MQTT_PORT);
+      mqttClient.setKeepAlive(60);
+      mqttClient.setBufferSize(MQTT_PACKET_SIZE);
+      mqttClient.setCallback(callback);
+      mqttClient.connect(MQTT_ID.c_str());
+
+      if (mqttClient.connected())
+      {
+        DBG_PRINTLN("MQTT client connected");
+      }
+
+      if (!mqttClient.subscribe(MQTT_CONFIG_TOPIC.c_str(), MQTT_SUB_QOS))
+      {
+        DBG_PRINTLN("Faield to subscripted to config topic");
+      }
     }
   }
 }
 
-void messageReceived(String &topic, String &payload)
+void setupAP()
 {
-  Serial.println("incoming: " + topic + " - " + payload);
+  WiFi.mode(WIFI_MODE_AP);
+  WiFi.setHostname(HOSTNAME.c_str());
+  WiFi.softAP(soft_ap_ssid, soft_ap_password);
+  DBG_PRINTLN(WiFi.softAPIP());
+}
+
+void callback(char *topic, byte *message, unsigned int length)
+{
+  comm.callback(topic, message, length);
+}
+
+void handle_root()
+{
+  server.send(200, "text/html", HTML);
+}
+
+void loopHandler(void *parameter)
+{
+  DBG_PRINTLN("Web task handler");
+  while (true)
+  {
+    server.handleClient();
+    if (!setUp)
+    {
+      mqttClient.loop();
+    }
+  }
 }

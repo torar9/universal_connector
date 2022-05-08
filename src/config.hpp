@@ -14,43 +14,8 @@
  ***********************************************/
 /** @endcond */
 
-/**< Wi-Fi SSID. */
-#define SSID "Damian"
-
-#define DEVICE_ID = "0123";
-
-/**< Wi-Fi password. */
-#define WIFI_PASSWD "Ahoj123123"
-
-/**< NTP server address. */
-#define NTP_SERVER "0.cz.pool.ntp.org"
-
-/**< MQTT client ID. */
-#define MQTT_ID "esp32"
-
-/**< MQTT client name. */
-#define MQTT_NAME "esp32"
-
-/**< MQTT server IP address. */
-#define MQTT_SERVER "192.168.0.38"
-
-/**< MQTT server port. */
-#define MQTT_PORT 1883 
-
-/**< Station hostname in local network. */
-#define HOSTNAME "esp32"
-
 /**< MQTT packet size in bytes. */
-#define MQTT_PACKET_SIZE 512
-
-/**< Topic name for logs. */
-#define LOG_TOPIC "insys/log"
-
-/**< Topic name for measured data. */
-#define DATA_TOPIC "insys/data"
-
-/**< Topic name for error reports. */
-#define REPORT_TOPIC "insys/report"
+#define MQTT_PACKET_SIZE 256
 
 /**< Quality of service (QoS) for MQTT publish communication. */
 #define MQTT_PUB_QOS 1
@@ -60,6 +25,39 @@
 
 /**< Connection timeout. */
 #define MQTT_TIMEOUT 5000
+
+static const char *soft_ap_ssid = "ESP32-INSYS";
+static const char *soft_ap_password = "Heslo123123";
+
+/**< Wi-Fi SSID. */
+static String SSID = "Damian";
+
+/**< Wi-Fi password. */
+static String WIFI_PASSWD = "Ahoj123123";
+
+/**< NTP server address. */
+static String NTP_SERVER = "0.cz.pool.ntp.org";
+
+/**< MQTT client ID. */
+static String MQTT_ID = "esp32";
+
+/**< MQTT server IP address. */
+static String MQTT_SERVER = "192.168.0.38";
+
+/**< MQTT server port. */
+static const int MQTT_PORT = 1883;
+
+/**< Station hostname in local network. */
+static String HOSTNAME = "esp32";
+
+/**< Topic name for logs. */
+static String MQTT_LOG_TOPIC = "insys/log";
+
+/**< Topic name for measured data. */
+static String MQTT_DATA_TOPIC = "insys/data";
+
+/**< Topic name for config subscription. */
+static String MQTT_CONFIG_TOPIC = "insys/config";
 
 
 /** @cond */

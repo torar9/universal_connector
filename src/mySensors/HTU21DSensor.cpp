@@ -1,31 +1,23 @@
 #include "HTU21DSensor.hpp"
 
-HTU21DSensor::HTU21DSensor()
+void HTU21DSensor::storeInto(DynamicJsonDocument& document)
 {
-    document = new DynamicJsonDocument(JSON_DOC_SIZE_MEASUREMENTS);
+    document[F("sensor_name")] = SENSOR_NAME;
+    document[F("temperature")] = temperature;
+    document[F("humidity")] = humidity;
 }
 
-float HTU21DSensor::getTemperature()
+void HTU21DSensor::storeInto(JsonArray& arr)
 {
-    return this->temperature;
+    JsonObject measurement = arr.createNestedObject();
+    
+    measurement[F("sensor_name")] = SENSOR_NAME;
+    measurement[F("temperature")] = temperature;
+    measurement[F("humidity")] = humidity;
 }
 
-float HTU21DSensor::getHumidity()
+void HTU21DSensor::measureAndStore()
 {
-    return this->humidity;
-}
-
-const DynamicJsonDocument* HTU21DSensor::getDocument()
-{
-    return this->document;
-}
-
-void HTU21DSensor::measure()
-{
-    this->temperature = htu.readTemperature();
-    this->humidity = htu.readHumidity();
-
-    (*document)[F("sensor_name")] = this->SENSOR_NAME;
-    (*document)[F("temperature")] = this->temperature;
-    (*document)[F("humidity")] = this->humidity;
+    this->temperature = this->readTemperature();
+    this->humidity = this->readHumidity();
 }
