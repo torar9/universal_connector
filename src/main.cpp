@@ -3,39 +3,20 @@
 #include <WiFi.h>
 #include <esp_wifi.h>
 #include <WiFiClient.h>
+#include <AsyncTCP.h>
 #include <PubSubClient.h>
 #include <Adafruit_MAX31865.h>
-#include <WebServer.h>
+#include <ESPAsyncWebServer.h>
 
 #include "Communicator.hpp"
 #include "mySensors/HTU21DSensor.hpp"
 #include "mySensors/PT1000Sensor.hpp"
 #include "config.hpp"
 
-const char HTML[] = "<!DOCTYPE html>\
-<html>\
-<body>\
-<h1>ESP32 config page - Access Point x</h1>\
-<form method=\"get\">\
-<label>Json config</label>\
-<hr>\
-<textarea rows=\"10\" cols=\"50\" name=\"config\" form=\"configForm\">{&#10;\
-\"ssid\": \"\",&#10;\
-\"passwd\": \"\",&#10;\
-\"mqtt_server\": \"\",&#10;\
-\"mqtt_id\": \"\",&#10;\
-\"mqtt_topic\": \"\"&#10;\
-}</textarea>\
-<hr>\
-<input type=\"submit\">\
-</form>\
-</body>\
-</html>";
-
 WiFiClient wifiClient;
 PubSubClient mqttClient(wifiClient);
 Communicator comm(mqttClient);
-WebServer server(80);
+AsyncWebServer server(80);
 
 // My sensors
 HTU21DSensor htu21d;
@@ -47,12 +28,11 @@ bool setUp = false;
 
 void setupNetwok();
 void setupAP();
-
 void callback(char *topic, byte *message, unsigned int length);
-
-void handle_root();
-
 void loopHandler(void *parameter);
+void notFound(AsyncWebServerRequest *request);
+void onRoot(AsyncWebServerRequest *request);
+void onAction(AsyncWebServerRequest *request);
 
 void setup()
 {
@@ -70,13 +50,17 @@ void setup()
   {
     DBG_PRINTLN("Unable to init MAX31865.");
   }
-  server.on("/", handle_root);
+  // server.on("/", handle_root);
 
   setupAP();
+  
+  server.on("/", HTTP_GET, onRoot);
+  server.on("/action", HTTP_POST, onAction);
+  server.onNotFound(notFound);
   server.begin();
 
   DBG_PRINTLN("HTTP server started");
-  
+
   xTaskCreatePinnedToCore(
       loopHandler, /* Function to implement the task */
       "web_task",  /* Name of the task */
@@ -171,20 +155,40 @@ void callback(char *topic, byte *message, unsigned int length)
   comm.callback(topic, message, length);
 }
 
-void handle_root()
-{
-  server.send(200, "text/html", HTML);
-}
-
 void loopHandler(void *parameter)
 {
   DBG_PRINTLN("Web task handler");
   while (true)
   {
-    server.handleClient();
     if (!setUp)
     {
       mqttClient.loop();
     }
   }
+}
+
+void notFound(AsyncWebServerRequest *request)
+{
+  request->send(404, "text/plain", "Not found");
+}
+
+void onRoot(AsyncWebServerRequest *request)
+{
+  DBG_PRINTLN("on root");
+
+  request->send(200, "text/html", HTML); 
+}
+
+void onAction(AsyncWebServerRequest *request)
+{
+  DBG_PRINTLN("on action");
+
+  int params = request->params();
+  DBG_PRINTLN(params);
+  for (int i = 0; i < params; i++)
+  {
+    AsyncWebParameter* p = request->getParam(i);
+    DBG_PRINTF3("POST[%s]: %s\n", p->name().c_str(), p->value().c_str());
+  }
+  request->send(200, "text/html", "Config succesfully set up."); 
 }
