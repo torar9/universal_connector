@@ -27,8 +27,8 @@ TaskHandle_t loopTask;
 bool isReady = false;
 
 /**
- * @brief 
- * 
+ * @brief
+ *
  */
 void setupNetwok();
 void setupAP();
@@ -57,7 +57,7 @@ void setup()
   // server.on("/", handle_root);
 
   setupAP();
-  
+
   server.on("/", HTTP_GET, onRoot);
   server.on("/action", HTTP_POST, onAction);
   server.onNotFound(notFound);
@@ -74,7 +74,7 @@ void setup()
       &loopTask,   /* Task handle. */
       0);          /* Core where the task should run */
 
-  while(!isReady)
+  while (!isReady)
   {
     delay(1);
   }
@@ -185,19 +185,26 @@ void onRoot(AsyncWebServerRequest *request)
 
 void onAction(AsyncWebServerRequest *request)
 {
-  DBG_PRINTLN("on action");
+  if (!isReady)
+  {
+    DBG_PRINTLN("on action");
 
-  int params = request->params();
-  DBG_PRINTLN(params);
+    int params = request->params();
+    DBG_PRINTLN(params);
 
-  DynamicJsonDocument document(JSON_DOC_SIZE_MEASUREMENTS);
-  AsyncWebParameter* p = request->getParam(0);
+    DynamicJsonDocument document(JSON_DOC_SIZE_MEASUREMENTS);
+    AsyncWebParameter *p = request->getParam(0);
 
-  DBG_PRINTF3("POST[%s]: %s\n", p->name().c_str(), p->value().c_str());
+    DBG_PRINTF3("POST[%s]: %s\n", p->name().c_str(), p->value().c_str());
 
-  deserializeJson(document, p->value());
-  serializeJsonPretty(document, Serial);
-  isReady = true;
+    deserializeJson(document, p->value());
+    SSID = document[F("ssid")].as<String>();
+    WIFI_PASSWD = document[F("passwd")].as<String>();
+    MQTT_SERVER = document[F("mqtt_server")].as<String>();
+    MQTT_ID = document[F("mqtt_id")].as<String>();
+    MQTT_DATA_TOPIC = document[F("mqtt_topic")].as<String>();
+    isReady = true;
+  }
 
-  request->send(200, "text/html", "Config succesfully set up."); 
+  request->send(200, "text/html", "Config succesfully set up.");
 }

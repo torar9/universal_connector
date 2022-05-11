@@ -18,16 +18,11 @@ void Communicator::callback(char *topic, byte *message, unsigned int length)
 
         JsonObject obj = doc.as<JsonObject>();
 
-        String ssid = obj[F("ssid")];
-        SSID = ssid;
-        String passwd = obj[F("passwd")];
-        WIFI_PASSWD = passwd;
-        String mqtt_server = obj[F("mqtt_server")];
-        MQTT_SERVER = mqtt_server;
-        String mqtt_id = obj[F("mqtt_id")];
-        MQTT_ID = mqtt_id;
-        String mqtt_topic = obj[F("mqtt_topic")];
-        MQTT_DATA_TOPIC = mqtt_topic;
+        SSID = obj[F("ssid")].as<String>();
+        WIFI_PASSWD = obj[F("passwd")].as<String>();
+        MQTT_SERVER = obj[F("mqtt_server")].as<String>();
+        MQTT_ID = obj[F("mqtt_id")].as<String>();;
+        MQTT_DATA_TOPIC = obj[F("mqtt_topic")].as<String>();
     }
 }
 
