@@ -24,8 +24,12 @@ PT1000Sensor pt1000(1000.0, 4015, 15);
 
 TaskHandle_t loopTask;
 
-bool setUp = false;
+bool isReady = false;
 
+/**
+ * @brief 
+ * 
+ */
 void setupNetwok();
 void setupAP();
 void callback(char *topic, byte *message, unsigned int length);
@@ -37,7 +41,7 @@ void onAction(AsyncWebServerRequest *request);
 void setup()
 {
 #if DEBUG == 1
-  Serial.begin(SERIAL_SPEED);
+  DBG_SERIAL_BEGIN(SERIAL_SPEED);
   delay(2000);
 #endif
 
@@ -63,14 +67,14 @@ void setup()
 
   xTaskCreatePinnedToCore(
       loopHandler, /* Function to implement the task */
-      "web_task",  /* Name of the task */
+      "web_task",  /* Name of the Wtask */
       10000,       /* Stack size in words */
       NULL,        /* Task input parameter */
       0,           /* Priority of the task */
       &loopTask,   /* Task handle. */
       0);          /* Core where the task should run */
 
-  while (!setUp)
+  while(!isReady)
   {
     delay(1);
   }
@@ -160,7 +164,7 @@ void loopHandler(void *parameter)
   DBG_PRINTLN("Web task handler");
   while (true)
   {
-    if (!setUp)
+    if (!isReady)
     {
       mqttClient.loop();
     }
@@ -176,7 +180,7 @@ void onRoot(AsyncWebServerRequest *request)
 {
   DBG_PRINTLN("on root");
 
-  request->send(200, "text/html", HTML); 
+  request->send(200, "text/html", HTML);
 }
 
 void onAction(AsyncWebServerRequest *request)
@@ -185,10 +189,15 @@ void onAction(AsyncWebServerRequest *request)
 
   int params = request->params();
   DBG_PRINTLN(params);
-  for (int i = 0; i < params; i++)
-  {
-    AsyncWebParameter* p = request->getParam(i);
-    DBG_PRINTF3("POST[%s]: %s\n", p->name().c_str(), p->value().c_str());
-  }
+
+  DynamicJsonDocument document(JSON_DOC_SIZE_MEASUREMENTS);
+  AsyncWebParameter* p = request->getParam(0);
+
+  DBG_PRINTF3("POST[%s]: %s\n", p->name().c_str(), p->value().c_str());
+
+  deserializeJson(document, p->value());
+  serializeJsonPretty(document, Serial);
+  isReady = true;
+
   request->send(200, "text/html", "Config succesfully set up."); 
 }

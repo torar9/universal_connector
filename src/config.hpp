@@ -105,30 +105,6 @@ static String MQTT_CONFIG_TOPIC = "insys/config";
  * Is used to set time from NTP server.
  */
 #define DAYLIGHT_OFFSET_SEC 3600
-/*
-const char HTML[] = "<!DOCTYPE html>\
-<html>\
-<head>\
-<title>ESP32 config page</title>\
-<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\
-</head>\
-<body>\
-<h1>ESP32 config page - Access Point</h1>\
-<form method=\"get\">\
-<label>Json config</label>\
-<hr>\
-<textarea rows=\"10\" cols=\"50\" name=\"config\" form=\"configForm\">{&#10;\
-\"ssid\": \"\",&#10;\
-\"passwd\": \"\",&#10;\
-\"mqtt_server\": \"\",&#10;\
-\"mqtt_id\": \"\",&#10;\
-\"mqtt_topic\": \"\"&#10;\
-}</textarea>\
-<hr>\
-<input type=\"submit\">\
-</form>\
-</body>\
-</html>";*/
 
 const char HTML[] = "<h1>ESP32 config page - Access Point</h1>\
 <form action='action' method=\"post\" name=\"configForm\" id=\"configForm\">\
