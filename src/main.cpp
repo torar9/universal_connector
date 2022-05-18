@@ -27,15 +27,52 @@ TaskHandle_t loopTask;
 bool isReady = false;
 
 /**
- * @brief
+ * @brief Configure network - conect to Wi-Fi as a client
  *
  */
+
 void setupNetwok();
+/**
+ * @brief create Access point
+ *
+ */
+
 void setupAP();
+/**
+ * @brief Callback function for MQTT
+ *
+ * @param topic MQTT topic which is sending data
+ * @param message Byte array containing data
+ * @param length Amount of bytes in message
+ */
 void callback(char *topic, byte *message, unsigned int length);
+
+/**
+ * @brief Handler function for MQTT loop() funtion
+ *
+ * @param parameter
+ */
 void loopHandler(void *parameter);
+
+/**
+ * @brief Web callback function for error 404
+ *
+ * @param request
+ */
 void notFound(AsyncWebServerRequest *request);
+
+/**
+ * @brief Web callback function for root webpage '/'
+ *
+ * @param request
+ */
 void onRoot(AsyncWebServerRequest *request);
+
+/**
+ * @brief Web callback function for handling form action
+ *
+ * @param request
+ */
 void onAction(AsyncWebServerRequest *request);
 
 void setup()
@@ -74,6 +111,7 @@ void setup()
       &loopTask,   /* Task handle. */
       0);          /* Core where the task should run */
 
+  isReady = true;
   while (!isReady)
   {
     delay(1);
@@ -87,6 +125,8 @@ void loop()
   DynamicJsonDocument eventDoc(JSON_DOC_SIZE_MEASUREMENTS);
   JsonArray measurements = eventDoc.createNestedArray(F("measurements"));
 
+  eventDoc["device_id"] = MQTT_ID;
+  
   htu21d.measureAndStore();
   pt1000.measureAndStore();
 
