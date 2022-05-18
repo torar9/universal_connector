@@ -1,1 +1,796 @@
-[{"id":"4a28bba1f14596d0","type":"tab","label":"INSYS","disabled":false,"info":"","env":[]},{"id":"92426d39b95e9394","type":"json","z":"4a28bba1f14596d0","name":"JSON parser","property":"payload","action":"","pretty":false,"x":390,"y":380,"wires":[["32f3219d69399b08","c949d94b4af247f0","c9a3c45f1ac6dd35","8fb65c88a5a3c187","c2c8928999ef75d9","0e07bee4123b2883","b3c601c5852232ae","82871e1f407c42f8","eb242dc2e4b1b366","7e7a9263995694d8"]]},{"id":"17dea69fea3abfe9","type":"mqtt in","z":"4a28bba1f14596d0","name":"","topic":"insys/data","qos":"2","datatype":"auto","broker":"584ce65.9042018","nl":false,"rap":false,"inputs":0,"x":160,"y":320,"wires":[["92426d39b95e9394"]]},{"id":"32f3219d69399b08","type":"debug","z":"4a28bba1f14596d0","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","targetType":"msg","statusVal":"","statusType":"auto","x":390,"y":300,"wires":[]},{"id":"c949d94b4af247f0","type":"change","z":"4a28bba1f14596d0","name":"humidity","rules":[{"t":"set","p":"payload","pt":"msg","to":"msg.payload.humidity","tot":"msg"}],"action":"","property":"","from":"","to":"","reg":false,"x":640,"y":220,"wires":[["046403abd455b0d8"]]},{"id":"c9a3c45f1ac6dd35","type":"change","z":"4a28bba1f14596d0","name":"temperature","rules":[{"t":"set","p":"payload","pt":"msg","to":"msg.payload.temperature","tot":"msg"}],"action":"","property":"","from":"","to":"","reg":false,"x":650,"y":260,"wires":[["6b13638892cac2bb"]]},{"id":"8fb65c88a5a3c187","type":"change","z":"4a28bba1f14596d0","name":"time","rules":[{"t":"set","p":"payload","pt":"msg","to":"msg.payload.time","tot":"msg"}],"action":"","property":"","from":"","to":"","reg":false,"x":630,"y":300,"wires":[["5b94933977bd50e6"]]},{"id":"c2c8928999ef75d9","type":"change","z":"4a28bba1f14596d0","name":"batteryLevel","rules":[{"t":"set","p":"payload","pt":"msg","to":"msg.payload.batteryLevel","tot":"msg"}],"action":"","property":"","from":"","to":"","reg":false,"x":650,"y":340,"wires":[["c2863d5fe0eeaf6d"]]},{"id":"c2863d5fe0eeaf6d","type":"ui_chart","z":"4a28bba1f14596d0","name":"batteryLevel","group":"21969134.636e3e","order":3,"width":0,"height":0,"label":"battery level","chartType":"line","legend":"false","xformat":"HH:mm:ss","interpolate":"linear","nodata":"","dot":false,"ymin":"","ymax":"","removeOlder":1,"removeOlderPoints":"","removeOlderUnit":"3600","cutout":0,"useOneColor":false,"useUTC":false,"colors":["#1f77b4","#aec7e8","#ff7f0e","#2ca02c","#98df8a","#d62728","#ff9896","#9467bd","#c5b0d5"],"outputs":1,"useDifferentColor":false,"x":890,"y":340,"wires":[[]]},{"id":"6b13638892cac2bb","type":"ui_chart","z":"4a28bba1f14596d0","name":"","group":"ffaf5c11.b22ea","order":2,"width":0,"height":0,"label":"temp","chartType":"line","legend":"false","xformat":"HH:mm:ss","interpolate":"linear","nodata":"","dot":false,"ymin":"-20","ymax":"125","removeOlder":1,"removeOlderPoints":"","removeOlderUnit":"3600","cutout":0,"useOneColor":false,"useUTC":false,"colors":["#1f77b4","#aec7e8","#ff7f0e","#2ca02c","#98df8a","#d62728","#ff9896","#9467bd","#c5b0d5"],"outputs":1,"x":870,"y":260,"wires":[[]]},{"id":"046403abd455b0d8","type":"ui_chart","z":"4a28bba1f14596d0","name":"","group":"ffaf5c11.b22ea","order":4,"width":0,"height":0,"label":"humidity","chartType":"line","legend":"false","xformat":"HH:mm:ss","interpolate":"linear","nodata":"","dot":false,"ymin":"0","ymax":"100","removeOlder":1,"removeOlderPoints":"","removeOlderUnit":"3600","cutout":0,"useOneColor":false,"useUTC":false,"colors":["#1f77b4","#aec7e8","#ff7f0e","#2ca02c","#98df8a","#d62728","#ff9896","#9467bd","#c5b0d5"],"outputs":1,"useDifferentColor":false,"x":880,"y":220,"wires":[[]]},{"id":"5b94933977bd50e6","type":"ui_text","z":"4a28bba1f14596d0","group":"21969134.636e3e","order":1,"width":0,"height":0,"name":"time","label":"Time of last measurement: ","format":"{{msg.payload}}","layout":"row-spread","x":870,"y":300,"wires":[]},{"id":"6f41ac7ac10b1a9d","type":"ui_chart","z":"4a28bba1f14596d0","name":"numberOfParticlesChart","group":"a97384.42578c8","order":1,"width":0,"height":0,"label":"Number of particles chart","chartType":"line","legend":"true","xformat":"HH:mm:ss","interpolate":"linear","nodata":"","dot":false,"ymin":"","ymax":"","removeOlder":1,"removeOlderPoints":"","removeOlderUnit":"3600","cutout":0,"useOneColor":false,"useUTC":false,"colors":["#1f77b4","#aec7e8","#ff7f0e","#2ca02c","#98df8a","#d62728","#ff9896","#9467bd","#c5b0d5"],"outputs":1,"useDifferentColor":false,"x":930,"y":560,"wires":[[]]},{"id":"7e7a9263995694d8","type":"function","z":"4a28bba1f14596d0","name":"NumConverter","func":"var nc0p5 = {};\nnc0p5.payload = msg.payload.nc0p5;\nnc0p5.topic = \"nc0p5\";\n\nvar nc1p0 = {};\nnc1p0.payload = msg.payload.nc1p0;\nnc1p0.topic = \"nc1p0\";\n\nvar nc2p5 = {};\nnc2p5.payload = msg.payload.nc2p5;\nnc2p5.topic = \"nc2p5\";\n\nvar nc4p0 = {};\nnc4p0.payload = msg.payload.nc4p0;\nnc4p0.topic = \"nc4p0 \";\n\nvar nc10p0 = {};\nnc10p0.payload = msg.payload.nc10p0;\nnc10p0.topic = \"nc10p0\";\n\nvar partSize = {};\npartSize.payload = msg.payload.typicalParticleSize;\npartSize.topic = \"typicalParticleSize\";\n\nreturn [nc0p5, nc1p0, nc2p5, nc4p0, nc10p0, partSize];","outputs":6,"noerr":0,"initialize":"","finalize":"","libs":[],"x":660,"y":560,"wires":[["6f41ac7ac10b1a9d"],["6f41ac7ac10b1a9d"],["6f41ac7ac10b1a9d"],["6f41ac7ac10b1a9d"],["6f41ac7ac10b1a9d"],["6f41ac7ac10b1a9d"]]},{"id":"d4041cfc9db4205f","type":"ui_chart","z":"4a28bba1f14596d0","name":"massOfParticlesChart","group":"a97384.42578c8","order":3,"width":0,"height":0,"label":"Mass of particles chart","chartType":"line","legend":"true","xformat":"HH:mm:ss","interpolate":"linear","nodata":"","dot":false,"ymin":"","ymax":"","removeOlder":1,"removeOlderPoints":"","removeOlderUnit":"3600","cutout":0,"useOneColor":false,"useUTC":false,"colors":["#1f77b4","#aec7e8","#ff7f0e","#2ca02c","#98df8a","#d62728","#ff9896","#9467bd","#c5b0d5"],"outputs":1,"useDifferentColor":false,"x":920,"y":460,"wires":[[]]},{"id":"24c20f92809b953e","type":"debug","z":"4a28bba1f14596d0","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","targetType":"msg","statusVal":"","statusType":"auto","x":390,"y":180,"wires":[]},{"id":"d5f7c9dae6ff7658","type":"mqtt in","z":"4a28bba1f14596d0","name":"","topic":"insys/report","qos":"2","datatype":"auto","broker":"584ce65.9042018","nl":false,"rap":false,"inputs":0,"x":170,"y":180,"wires":[["24c20f92809b953e"]]},{"id":"017b52aeab30c810","type":"ui_text","z":"4a28bba1f14596d0","group":"21969134.636e3e","order":2,"width":0,"height":0,"name":"","label":"pressure","format":"{{msg.payload}}","layout":"row-spread","x":880,"y":180,"wires":[]},{"id":"0e07bee4123b2883","type":"change","z":"4a28bba1f14596d0","name":"pressure","rules":[{"t":"set","p":"payload","pt":"msg","to":"msg.payload.pressure","tot":"msg"}],"action":"","property":"","from":"","to":"","reg":false,"x":640,"y":180,"wires":[["017b52aeab30c810"]]},{"id":"b3c601c5852232ae","type":"change","z":"4a28bba1f14596d0","name":"gasResistance","rules":[{"t":"set","p":"payload","pt":"msg","to":"msg.payload.gasResistance","tot":"msg"}],"action":"","property":"","from":"","to":"","reg":false,"x":660,"y":140,"wires":[["265cc73d35bf0cf8"]]},{"id":"265cc73d35bf0cf8","type":"ui_chart","z":"4a28bba1f14596d0","name":"gas","group":"ffaf5c11.b22ea","order":1,"width":0,"height":0,"label":"gas resistance:","chartType":"line","legend":"false","xformat":"HH:mm:ss","interpolate":"linear","nodata":"","dot":false,"ymin":"","ymax":"","removeOlder":1,"removeOlderPoints":"","removeOlderUnit":"3600","cutout":0,"useOneColor":false,"useUTC":false,"colors":["#1f77b4","#aec7e8","#ff7f0e","#2ca02c","#98df8a","#d62728","#ff9896","#9467bd","#c5b0d5"],"outputs":1,"useDifferentColor":false,"x":870,"y":140,"wires":[[]]},{"id":"ed97d970c9fc0cdd","type":"mqtt in","z":"4a28bba1f14596d0","name":"","topic":"insys/log","qos":"2","datatype":"auto","broker":"584ce65.9042018","nl":false,"rap":false,"inputs":0,"x":160,"y":240,"wires":[["886b031274b4b740"]]},{"id":"886b031274b4b740","type":"debug","z":"4a28bba1f14596d0","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","targetType":"msg","statusVal":"","statusType":"auto","x":390,"y":240,"wires":[]},{"id":"eb242dc2e4b1b366","type":"function","z":"4a28bba1f14596d0","name":"MassConverter","func":"var mc1p0 = {};\nmc1p0.payload = msg.payload.nc0p5;\nmc1p0.topic = \"mc_1p0\";\n\nvar nc2p5 = {};\nnc2p5.payload = msg.payload.nc1p0;\nnc2p5.topic = \"mc_2p5\";\n\nvar mc4p0 = {};\nmc4p0.payload = msg.payload.mc4p0;\nmc4p0.topic = \"mc_4p0\";\n\nvar mc10p0 = {};\nmc10p0.payload = msg.payload.nc10p0;\nmc10p0.topic = \"mc_10p0 \";\n\nreturn [mc1p0, nc2p5, mc4p0, mc10p0];","outputs":4,"noerr":0,"initialize":"","finalize":"","libs":[],"x":660,"y":460,"wires":[["d4041cfc9db4205f"],["d4041cfc9db4205f"],["d4041cfc9db4205f"],["d4041cfc9db4205f"]]},{"id":"82871e1f407c42f8","type":"change","z":"4a28bba1f14596d0","name":"voltageLevel","rules":[{"t":"set","p":"payload","pt":"msg","to":"msg.payload.voltage","tot":"msg"}],"action":"","property":"","from":"","to":"","reg":false,"x":650,"y":380,"wires":[["31849cdcc07dd1aa"]]},{"id":"31849cdcc07dd1aa","type":"ui_chart","z":"4a28bba1f14596d0","name":"voltageLevel","group":"21969134.636e3e","order":3,"width":0,"height":0,"label":"voltage level","chartType":"line","legend":"false","xformat":"HH:mm:ss","interpolate":"linear","nodata":"","dot":false,"ymin":"","ymax":"","removeOlder":1,"removeOlderPoints":"","removeOlderUnit":"3600","cutout":0,"useOneColor":false,"useUTC":false,"colors":["#1f77b4","#aec7e8","#ff7f0e","#2ca02c","#98df8a","#d62728","#ff9896","#9467bd","#c5b0d5"],"outputs":1,"useDifferentColor":false,"x":890,"y":380,"wires":[[]]},{"id":"584ce65.9042018","type":"mqtt-broker","name":"test","broker":"127.0.0.1","port":"1883","clientid":"","usetls":false,"compatmode":false,"protocolVersion":4,"keepalive":"60","cleansession":true,"birthTopic":"","birthQos":"0","birthPayload":"","closeTopic":"","closeQos":"0","closePayload":"","willTopic":"","willQos":"0","willPayload":""},{"id":"21969134.636e3e","type":"ui_group","name":"Other","tab":"b78cddc6.69ebc","order":1,"disp":true,"width":10,"collapse":false},{"id":"ffaf5c11.b22ea","type":"ui_group","name":"BME680","tab":"b78cddc6.69ebc","order":3,"disp":true,"width":"10","collapse":false},{"id":"a97384.42578c8","type":"ui_group","name":"SPS30","tab":"b78cddc6.69ebc","order":2,"disp":true,"width":10,"collapse":false},{"id":"b78cddc6.69ebc","type":"ui_tab","name":"test","icon":"dashboard","order":1,"disabled":false,"hidden":false}]
+[
+    {
+        "id": "4a28bba1f14596d0",
+        "type": "tab",
+        "label": "INSYS",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "92426d39b95e9394",
+        "type": "json",
+        "z": "4a28bba1f14596d0",
+        "name": "JSON parser",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 350,
+        "y": 440,
+        "wires": [
+            [
+                "32f3219d69399b08",
+                "c949d94b4af247f0",
+                "c9a3c45f1ac6dd35",
+                "0788324a44214d63",
+                "f9eaacfbf58aa7ec",
+                "4c497ffa1221496e"
+            ]
+        ]
+    },
+    {
+        "id": "17dea69fea3abfe9",
+        "type": "mqtt in",
+        "z": "4a28bba1f14596d0",
+        "name": "",
+        "topic": "insys/data",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "584ce65.9042018",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 120,
+        "y": 380,
+        "wires": [
+            [
+                "92426d39b95e9394"
+            ]
+        ]
+    },
+    {
+        "id": "32f3219d69399b08",
+        "type": "debug",
+        "z": "4a28bba1f14596d0",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 350,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "c949d94b4af247f0",
+        "type": "change",
+        "z": "4a28bba1f14596d0",
+        "name": "humidity",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "msg.payload.measurements[0].humidity",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 600,
+        "y": 60,
+        "wires": [
+            [
+                "0f97a38d358ac324"
+            ]
+        ]
+    },
+    {
+        "id": "c9a3c45f1ac6dd35",
+        "type": "change",
+        "z": "4a28bba1f14596d0",
+        "name": "temperature",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "msg.payload.measurements[0].temperature",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 610,
+        "y": 100,
+        "wires": [
+            [
+                "263d0f884190177a"
+            ]
+        ]
+    },
+    {
+        "id": "ed97d970c9fc0cdd",
+        "type": "mqtt in",
+        "z": "4a28bba1f14596d0",
+        "name": "",
+        "topic": "insys/log",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "584ce65.9042018",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 120,
+        "y": 300,
+        "wires": [
+            [
+                "886b031274b4b740"
+            ]
+        ]
+    },
+    {
+        "id": "886b031274b4b740",
+        "type": "debug",
+        "z": "4a28bba1f14596d0",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 350,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "0788324a44214d63",
+        "type": "change",
+        "z": "4a28bba1f14596d0",
+        "name": "temperature",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "msg.payload.measurements[1].temperature",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 610,
+        "y": 140,
+        "wires": [
+            [
+                "f3de52632ae5047e"
+            ]
+        ]
+    },
+    {
+        "id": "0f97a38d358ac324",
+        "type": "ui_chart",
+        "z": "4a28bba1f14596d0",
+        "name": "",
+        "group": "21969134.636e3e",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "label": "HTU21D humidity",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": 1,
+        "removeOlderPoints": "1000",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 890,
+        "y": 60,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "263d0f884190177a",
+        "type": "ui_chart",
+        "z": "4a28bba1f14596d0",
+        "name": "",
+        "group": "e92efad51491b760",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "label": "HTU21D temperature",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "-20",
+        "ymax": "100",
+        "removeOlder": 1,
+        "removeOlderPoints": "1000",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 900,
+        "y": 100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f3de52632ae5047e",
+        "type": "ui_chart",
+        "z": "4a28bba1f14596d0",
+        "name": "PT1000 temperature",
+        "group": "21969134.636e3e",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "label": "PT1000 temperature",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": 1,
+        "removeOlderPoints": "1000",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 900,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b3f3334c08a083a3",
+        "type": "mqtt out",
+        "z": "4a28bba1f14596d0",
+        "name": "insys/config",
+        "topic": "insys/config",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "584ce65.9042018",
+        "x": 510,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "418f4e978febeb5d",
+        "type": "ui_form",
+        "z": "4a28bba1f14596d0",
+        "name": "json config",
+        "label": "json config",
+        "group": "506a5b384a31822a",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "ssid",
+                "value": "ssid",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "passwd",
+                "value": "passwd",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "mqtt_server",
+                "value": "mqtt_server",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "mqtt_id",
+                "value": "mqtt_id",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "mqtt_topic",
+                "value": "mqtt_topic",
+                "type": "text",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "ssid": "",
+            "passwd": "",
+            "mqtt_server": "",
+            "mqtt_id": "",
+            "mqtt_topic": ""
+        },
+        "payload": "",
+        "submit": "submit",
+        "cancel": "cancel",
+        "topic": "topic",
+        "topicType": "msg",
+        "splitLayout": false,
+        "className": "",
+        "x": 130,
+        "y": 780,
+        "wires": [
+            [
+                "d2528881ef997534"
+            ]
+        ]
+    },
+    {
+        "id": "e61a5e733fe309aa",
+        "type": "inject",
+        "z": "4a28bba1f14596d0",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{     \"ssid\": \"Damian\",     \"passwd\": \"Ahoj123123\",     \"mqtt_server\": \"192.168.0.38\",     \"mqtt_id\": \"esp32\",     \"mqtt_topic\": \"data\" }",
+        "payloadType": "str",
+        "x": 130,
+        "y": 720,
+        "wires": [
+            [
+                "b3f3334c08a083a3"
+            ]
+        ]
+    },
+    {
+        "id": "d2528881ef997534",
+        "type": "template",
+        "z": "4a28bba1f14596d0",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "json",
+        "syntax": "mustache",
+        "template": "{\n    \"ssid\": \"{{payload.ssid}}\",\n    \"passwd\": \"{{payload.passwd}}\",\n    \"mqtt_server\": \"{{payload.mqtt_server}}\",\n    \"mqtt_id\": \"{{payload.mqtt_id}}\",\n    \"mqtt_topic\": \"{{payload.mqtt_topic}}\"\n}",
+        "output": "str",
+        "x": 300,
+        "y": 780,
+        "wires": [
+            [
+                "b3f3334c08a083a3"
+            ]
+        ]
+    },
+    {
+        "id": "eb242dc2e4b1b366",
+        "type": "function",
+        "z": "4a28bba1f14596d0",
+        "name": "MassConverter",
+        "func": "var mc1p0 = {};\nmc1p0.payload = msg.payload.nc0p5;\nmc1p0.topic = \"mc_1p0\";\n\nvar nc2p5 = {};\nnc2p5.payload = msg.payload.nc1p0;\nnc2p5.topic = \"mc_2p5\";\n\nvar mc4p0 = {};\nmc4p0.payload = msg.payload.mc4p0;\nmc4p0.topic = \"mc_4p0\";\n\nvar mc10p0 = {};\nmc10p0.payload = msg.payload.nc10p0;\nmc10p0.topic = \"mc_10p0 \";\n\nreturn [mc1p0, nc2p5, mc4p0, mc10p0];",
+        "outputs": 4,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1040,
+        "y": 720,
+        "wires": [
+            [],
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "7e7a9263995694d8",
+        "type": "function",
+        "z": "4a28bba1f14596d0",
+        "name": "NumConverter",
+        "func": "var nc0p5 = {};\nnc0p5.payload = msg.payload.nc0p5;\nnc0p5.topic = \"nc0p5\";\n\nvar nc1p0 = {};\nnc1p0.payload = msg.payload.nc1p0;\nnc1p0.topic = \"nc1p0\";\n\nvar nc2p5 = {};\nnc2p5.payload = msg.payload.nc2p5;\nnc2p5.topic = \"nc2p5\";\n\nvar nc4p0 = {};\nnc4p0.payload = msg.payload.nc4p0;\nnc4p0.topic = \"nc4p0 \";\n\nvar nc10p0 = {};\nnc10p0.payload = msg.payload.nc10p0;\nnc10p0.topic = \"nc10p0\";\n\nvar partSize = {};\npartSize.payload = msg.payload.typicalParticleSize;\npartSize.topic = \"typicalParticleSize\";\n\nreturn [nc0p5, nc1p0, nc2p5, nc4p0, nc10p0, partSize];",
+        "outputs": 6,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1040,
+        "y": 820,
+        "wires": [
+            [],
+            [],
+            [],
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "f9eaacfbf58aa7ec",
+        "type": "function",
+        "z": "4a28bba1f14596d0",
+        "name": "insert-uplink-function",
+        "func": "var params = [msg.payload.device_id];\n\nmsg = {params: params, topic: 'device'};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 540,
+        "wires": [
+            [
+                "698f9fc7fb45bbb1",
+                "dccffcb820f8d098"
+            ]
+        ]
+    },
+    {
+        "id": "698f9fc7fb45bbb1",
+        "type": "postgresql",
+        "z": "4a28bba1f14596d0",
+        "name": "device-insert",
+        "query": "INSERT INTO \"insys\".\"device\"(device_id) \nvalues($1)\non conflict do nothing;",
+        "postgreSQLConfig": "dd66ef4731793372",
+        "split": false,
+        "rowsPerMsg": 1,
+        "outputs": 1,
+        "x": 830,
+        "y": 540,
+        "wires": [
+            [
+                "8bc03510d816f764"
+            ]
+        ]
+    },
+    {
+        "id": "8bc03510d816f764",
+        "type": "function",
+        "z": "4a28bba1f14596d0",
+        "name": "delay-flush",
+        "func": "msg = {flush: 1};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1010,
+        "y": 540,
+        "wires": [
+            [
+                "29b6d58450fbc87e"
+            ]
+        ]
+    },
+    {
+        "id": "29b6d58450fbc87e",
+        "type": "delay",
+        "z": "4a28bba1f14596d0",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "60",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 920,
+        "y": 440,
+        "wires": [
+            [
+                "6e89c37918319a0a"
+            ]
+        ]
+    },
+    {
+        "id": "6e89c37918319a0a",
+        "type": "postgresql",
+        "z": "4a28bba1f14596d0",
+        "name": "measurement_insert",
+        "query": "INSERT INTO insys.measurement(device_id, data) \nvalues($1, $2);",
+        "postgreSQLConfig": "dd66ef4731793372",
+        "split": false,
+        "rowsPerMsg": "2",
+        "outputs": 1,
+        "x": 1220,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4c497ffa1221496e",
+        "type": "function",
+        "z": "4a28bba1f14596d0",
+        "name": "insert-uplink-function",
+        "func": "var params = [msg.payload.device_id, msg.payload.measurements];\n\nmsg = {params: params, topic: 'device'};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 440,
+        "wires": [
+            [
+                "29b6d58450fbc87e"
+            ]
+        ]
+    },
+    {
+        "id": "dccffcb820f8d098",
+        "type": "debug",
+        "z": "4a28bba1f14596d0",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 830,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "5f8cc9945be9611b",
+        "type": "inject",
+        "z": "4a28bba1f14596d0",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"measurements\":[{\"sensor_name\":\"HTU21D\",\"temperature\":23.48519135,\"humidity\":29.05706787},{\"sensor_name\":\"PT1000\",\"temperature\":22.54103088}],\"device_id\":\"esp32\"}",
+        "payloadType": "str",
+        "x": 130,
+        "y": 440,
+        "wires": [
+            [
+                "92426d39b95e9394"
+            ]
+        ]
+    },
+    {
+        "id": "ce9b275a86e1b988",
+        "type": "catch",
+        "z": "4a28bba1f14596d0",
+        "name": "device-insert-error",
+        "scope": [],
+        "uncaught": false,
+        "x": 610,
+        "y": 200,
+        "wires": [
+            [
+                "d2a97f9dc8aa215c"
+            ]
+        ]
+    },
+    {
+        "id": "d2a97f9dc8aa215c",
+        "type": "function",
+        "z": "4a28bba1f14596d0",
+        "name": "delay-reset",
+        "func": "msg = {reset: 1};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 810,
+        "y": 260,
+        "wires": [
+            [
+                "29b6d58450fbc87e"
+            ]
+        ]
+    },
+    {
+        "id": "584ce65.9042018",
+        "type": "mqtt-broker",
+        "name": "test",
+        "broker": "127.0.0.1",
+        "port": "1883",
+        "tls": "",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "compatmode": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "21969134.636e3e",
+        "type": "ui_group",
+        "name": "HTU21D",
+        "tab": "b78cddc6.69ebc",
+        "order": 1,
+        "disp": true,
+        "width": 15,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "e92efad51491b760",
+        "type": "ui_group",
+        "name": "PT1000",
+        "tab": "b78cddc6.69ebc",
+        "order": 2,
+        "disp": true,
+        "width": 15,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "506a5b384a31822a",
+        "type": "ui_group",
+        "name": "json config",
+        "tab": "546891bed4a9cec1",
+        "order": 1,
+        "disp": true,
+        "width": 15,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "dd66ef4731793372",
+        "type": "postgreSQLConfig",
+        "name": "rpi-insys",
+        "host": "127.0.0.1",
+        "hostFieldType": "str",
+        "port": "5432",
+        "portFieldType": "num",
+        "database": "insys",
+        "databaseFieldType": "str",
+        "ssl": "true",
+        "sslFieldType": "bool",
+        "max": "10",
+        "maxFieldType": "num",
+        "min": "1",
+        "minFieldType": "num",
+        "idle": "1000",
+        "idleFieldType": "num",
+        "connectionTimeout": "10000",
+        "connectionTimeoutFieldType": "num",
+        "user": "postgres",
+        "userFieldType": "str",
+        "password": "Su352pot",
+        "passwordFieldType": "str"
+    },
+    {
+        "id": "b78cddc6.69ebc",
+        "type": "ui_tab",
+        "name": "insys",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "546891bed4a9cec1",
+        "type": "ui_tab",
+        "name": "input",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    }
+]
