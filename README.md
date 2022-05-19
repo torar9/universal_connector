@@ -1,6 +1,5 @@
 # universal_connector
 # Závislosti
-## Server
 - [PostgreSQL](https://www.postgresql.org/)
 - [Node-RED](https://nodered.org/)
 - [Eclipse Mosquitto](https://mosquitto.org/)
