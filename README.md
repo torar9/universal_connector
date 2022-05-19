@@ -21,7 +21,7 @@ user@server:~$ sudo cp pg_hba.conf pg_hba.conf.old # Záloha konfiguračních so
 user@server:~$ sudo nano pg_hba.conf # Upravit přihlašování na md5 nebo scram-sha-256
 user@server:~$ sudo su postgres # Přihlášení jako postgres uživatel
 postgres@server:~$ psql # Vstup do postgres terminálu, následně vytvoření databáze a nastavení hesla pro postgres uživatele
-psql> create database osu-tv;
+psql> create database insys;
       ALTER USER postgres WITH PASSWORD 'DOPLNIT';
       exit
 postgres@server:~$ exit
