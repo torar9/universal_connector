@@ -69,11 +69,18 @@ void notFound(AsyncWebServerRequest *request);
 void onRoot(AsyncWebServerRequest *request);
 
 /**
- * @brief Web callback function for handling form action
+ * @brief Web callback function for handling action form 
  *
  * @param request
  */
 void onAction(AsyncWebServerRequest *request);
+
+/**
+ * @brief Web callback function for handling skip form
+ *
+ * @param request
+ */
+void onSkip(AsyncWebServerRequest *request);
 
 void setup()
 {
@@ -97,6 +104,7 @@ void setup()
 
   server.on("/", HTTP_GET, onRoot);
   server.on("/action", HTTP_POST, onAction);
+  server.on("/skip", HTTP_POST, onSkip);
   server.onNotFound(notFound);
   server.begin();
 
@@ -243,6 +251,18 @@ void onAction(AsyncWebServerRequest *request)
     MQTT_SERVER = document[F("mqtt_server")].as<String>();
     MQTT_ID = document[F("mqtt_id")].as<String>();
     MQTT_DATA_TOPIC = document[F("mqtt_topic")].as<String>();
+    isReady = true;
+  }
+
+  request->send(200, "text/html", "Config succesfully set up.");
+}
+
+void onSkip(AsyncWebServerRequest *request)
+{
+  if (!isReady)
+  {
+    DBG_PRINTLN("on skip");
+
     isReady = true;
   }
 

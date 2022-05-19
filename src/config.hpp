@@ -119,6 +119,9 @@ const char HTML[] = "<h1>ESP32 config page - Access Point</h1>\
 }</textarea>\
 <hr>\
 <input type=\"submit\">\
+</form>\
+<form action=\"skip\" method=\"post\" name=\"skipForm\" id=\"skipForm\">\
+<input type=\"submit\" value=\"Skip\">\
 </form>";
 
 
